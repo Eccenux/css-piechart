@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Triangles</title>
+	<link rel="icon" type="image/x-icon" href="fav.ico">
+</head>
+<body>
+<style>
+pie {
+	display: block;
+	position: relative;
+	width: 100px;
+	height: 100px;
+	border-radius: 50%;
+	background-color: yellowgreen;
+}
+pie * {
+	display: block;
+	position: absolute;
+	transform-origin: left;
+	background-color: #655;
+}
+pie pie50 {
+	top: 0; left: 50%;
+	width: 50%; height: 100%;
+	border-radius: 0 100% 100% 0 / 50%;
+}
+pie pie25 {
+	top: 0; left: 50%;
+	width: 50%; height: 50%;
+	border-radius: 0 500% 0 0;
+}
+
+section {
+	display:grid;
+	gap: 1em;
+	grid-template-columns: repeat( auto-fill, 100px );
+	margin-block: 1em;
+}
+section d {
+	display:grid;
+}
+section h2 {
+	font-size: 100%;
+}
+
+body {
+	font-family: system-ui, sans-serif;
+}
+pre {
+	background-color: rgb(202, 231, 144);
+}
+</style>
+
+<p>Less to none clip-path (trying to avoid overlap).</p>
+
+<section>
+<d>
+	<h2>50</h2>
+	<pie>
+		<pie50/>
+	</pie>
+</d>
+<d>
+	<h2>25</h2>
+	<pie>
+		<pie25/>
+	</pie>
+</d>
+</section>
+
+<pre>
+TODO
+- ✅ pie50 (can be used on anything from 50-100%) -- half circle.
+- ✅ pie25 (can be used on anything from 25-50%) -- fourth circle.
+- 0-25 with a traingle clip-path of pie25.
+</pre>
+
+</body>
+</html>
+
