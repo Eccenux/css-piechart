@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Test labels • CSS Piechart</title>
+	<link rel="stylesheet" type="text/css" href="piechart.css">
+	<link rel="icon" type="image/x-icon" href="Nux.ico">
+	<style>
+		section {
+			display:grid;
+			gap: 1em;
+			grid-template-columns: repeat( auto-fill, 8em 100px );
+			margin-block: 1em;
+		}
+		section p {
+			text-align: right;
+		}
+	</style>
+</head>
+<body>
+<p>Having multiple, overlapping, clipped elements seems problematic for browsers.</p>
+<section>
+	<div class="smooth-pie" style="width:100px; height:100px;background-color: wheat" title="kanapki: 30,0%">
+		<div class="piemask">
+			<div class="slice" style="transform: scale(-1, 1) rotate(-0.200turn) translatex(50px); background-color: goldenrod" title="ciastka: 20,0%"></div>
+		</div>
+		<div class="piemask" style="transform: rotate(0.200turn);">
+			<div class="slice" style="transform: scale(-1, 1) rotate(-0.400turn) translatex(50px); background-color: darkred" title="słodycze: 40,0%"></div>
+		</div>
+		<div class="piemask" style="transform: rotate(0.600turn);">
+			<div class="slice" style="transform: scale(-1, 1) rotate(-0.100turn) translatex(50px); background-color: lightblue" title="napoje: 10,0%"></div>
+		</div>
+	</div>
+	<div class="smooth-pie" style="width:100px; height:100px;background-color: black">
+		<div class="piemask"><div class="slice" style="transform: scale(-1, 1) rotate(-0.461turn) translatex(50px); background-color: #ff5733" title="Chrześcijaństwo: 46,1%"></div></div>
+		<div class="piemask" style="transform: rotate(0.461turn);"><div class="slice" style="transform: scale(-1, 1) rotate(-0.218turn) translatex(50px); background-color: #33ff57" title="Islam: 21,8%"></div></div>
+		<div class="piemask" style="transform: rotate(0.679turn);"><div class="slice" style="transform: scale(-1, 1) rotate(-0.193turn) translatex(50px); background-color: #5733ff" title="Brak wyznania: 19,3%"></div></div>
+		<div class="piemask" style="transform: rotate(0.872turn);"><div class="slice" style="transform: scale(-1, 1) rotate(-0.030turn) translatex(50px); background-color: #ffff33" title="Sikhizm: 3,0%"></div></div>
+		<div class="piemask" style="transform: rotate(0.902turn);"><div class="slice" style="transform: scale(-1, 1) rotate(-0.021turn) translatex(50px); background-color: #ff5733" title="Hinduizm: 2,1%"></div></div>
+		<div class="piemask" style="transform: rotate(0.923turn);"><div class="slice" style="transform: scale(-1, 1) rotate(-0.012turn) translatex(50px); background-color: #33ff57" title="Pozostałe: 1,2%"></div></div>
+	</div>	
+<!--
+	local entries = {
+	    '{"label": "ciastka: $v", "value": 2, "color":"goldenrod"}',
+	    '{"label": "słodycze: $v", "value": 4, "color":"darkred"}',
+	    '{"label": "napoje: $v", "value": 1, "color":"lightblue"}',
+	    '{"label": "kanapki: $v", "value": 3, "color":"wheat"}'
+	}
+	local json_data = '['..table.concat(entries, ',')..']'
+	local html = p.renderPie(json_data, '{"autoscale":true}')
+	mw.logObject(html)
+-->
+</section>	
+</body>
+</html>
