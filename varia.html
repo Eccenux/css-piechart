@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>N:Piechart</title>
+	<link rel="stylesheet" type="text/css" href="piechart.css">
+	<link rel="icon" type="image/x-icon" href="Nux.ico">
+	<style>
+		section {
+			display:grid;
+			gap: 1em;
+			grid-template-columns: repeat( auto-fill, 8em 100px );
+			margin-block: 1em;
+		}
+		section p {
+			text-align: right;
+		}
+	</style>
+</head>
+<body>
+<section>
+	<p style="margin-block: 1em;">right side is small (67% vs 33%)
+	<div class="smooth-pie" style="width: 100px; height: 100px; background-color: #347BFF;" title="67%">
+		<div class="piemask">
+			<div class="slice" style="transform: scale(-1, 1) rotate(-0.33turn) translatex(50px); background-color: #1a3d7f;" title="33%"></div>
+		</div>
+	</div>
+
+	<p style="margin-block: 1em;">right side is big (25% vs 75%)
+	<div class="smooth-pie" style="width: 100px; height: 100px; background-color: #347BFF;" title="25%">
+		<!-- first 50% -->
+		<div class="piemask">
+			<div class="slice" style="background-color: #1a3d7f;" title="75%"></div>
+		</div>
+		<!-- 75% - 50% = 25% -->
+		<div class="piemask" style="transform: rotate(0.5turn)">
+			<div class="slice" style="transform: scale(-1, 1) rotate(-0.25turn) translatex(50px); background-color: #1a3d7f;" title="75%"></div>
+		</div>
+	</div>
+	<p style="margin-block: 1em;">right side is big (33% vs 67%)
+	<div class="smooth-pie" style="width: 100px; height: 100px; background-color: #347BFF;" title="33%">
+		<!-- first 50% -->
+		<div class="piemask">
+			<div class="slice" style="background-color: #1a3d7f;" title="67%"></div>
+		</div>
+		<!-- 67% - 50% = 17% -->
+		<div class="piemask" style="transform: rotate(0.5turn)">
+			<div class="slice" style="transform: scale(-1, 1) rotate(-0.17turn) translatex(50px); background-color: #1a3d7f;" title="67%"></div>
+		</div>
+	</div>
+</section>
+<section>
+	<p style="margin-block: 1em;">test 3 small elements (must be below 50%)
+	<div class="smooth-pie" style="width: 100px; height: 100px; background-color: #347BFF;" title="33%">
+		<div class="piemask">
+			<div class="slice" style="transform: scale(-1, 1) rotate(-0.33turn) translatex(50px); background-color: #1a3d7f;" title="33%"></div>
+		</div>
+		<!-- note that we rotate piemask by the same ammount as previous slice (this slice is the same as previous but we rotate it into place) -->
+		<div class="piemask" style="transform: rotate(0.33turn)">
+			<div class="slice" style="transform: scale(-1, 1) rotate(-0.33turn) translatex(50px); background-color: #ff3d7f;" title="33%"></div>
+		</div>
+	</div>
+	<p style="margin-block: 1em;">test multiple small slices
+	<div class="smooth-pie" style="width: 100px; height: 100px; background-color: #347BFF;" title="20%">
+		<div class="piemask">
+			<div class="slice" style="transform: scale(-1, 1) rotate(-0.20turn) translatex(50px); background-color: #1a3d7f;" title="20%"></div>
+		</div>
+		<div class="piemask" style="transform: rotate(0.20turn)">
+			<div class="slice" style="transform: scale(-1, 1) rotate(-0.05turn) translatex(50px); background-color: #e36;" title="5%"></div>
+		</div>
+		<div class="piemask" style="transform: rotate(0.25turn)">
+			<div class="slice" style="transform: scale(-1, 1) rotate(-0.25turn) translatex(50px); background-color: #dd3;" title="25%"></div>
+		</div>
+		<div class="piemask" style="transform: rotate(0.50turn)">
+			<div class="slice" style="transform: scale(-1, 1) rotate(-0.30turn) translatex(50px); background-color: #00AF89;" title="25%"></div>
+		</div>
+	</div>
+</section>
+</body>
+</html>
