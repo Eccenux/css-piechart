@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Lea Smashing</title>
+</head>
+<body>
+<style>
+.pie {
+  position: relative;
+  margin: 1em;
+  width: 100px;
+  line-height: 100px;
+  border-radius: 50%;
+  background: yellowgreen;
+  background-image:
+    linear-gradient(to right, transparent 50%, #655 0);
+  color: transparent;
+  text-align: center;
+}
+
+@keyframes spin {
+  to { transform: rotate(.5turn); }
+}
+@keyframes bg {
+  50% { background: #655; }
+}
+
+.pie::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%;
+  width: 50%; height: 100%;
+  border-radius: 0 100% 100% 0 / 50%;
+  background-color: inherit;
+  transform-origin: left;
+  animation: spin 50s linear infinite,
+             bg 100s step-end infinite;
+  animation-play-state: paused;
+  animation-delay: inherit;
+}
+</style>
+<p><a 
+	href="https://www.smashingmagazine.com/2015/07/designing-simple-pie-charts-with-css/"
+	target="_blank"
+	rel="noopener noreferrer"
+	>Designing A Flexible, Maintainable CSS Pie Chart With SVG</a>, Lea Verou, Jul 28, 2015
+</p>
+
+<div class="pie">20%</div>
+<div class="pie">60%</div>
+
+<script>
+document.querySelectorAll('.pie').forEach(function(pie) {
+  var p = parseFloat(pie.textContent);
+  pie.style.animationDelay = '-' + p + 's';
+});	
+</script>
+</body>
+</html>
+
