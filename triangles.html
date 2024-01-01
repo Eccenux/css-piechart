@@ -28,6 +28,7 @@ pie pie50 {
 	width: 50%; height: 100%;
 	border-radius: 0 100% 100% 0 / 50%;
 }
+pie pieX,
 pie pie1,
 pie pie25 {
 	top: 0; left: 50%;
@@ -61,7 +62,7 @@ pie pie1 {
 	</pie>
 </d>
 </section>
-<section>
+<section style="grid-template-columns: min-content min-content;">
 <d>
 	<h2>1% * 25</h2>
 	<pie title="fin" style="
@@ -97,6 +98,47 @@ pie pie1 {
 		<pie1 title="25%" style="rotate: 0.24turn; background: #355;"></pie1>
 	</pie>
 </d>
+<d>
+	<h2>5% (yel.), 10% (blue), 24% (orange)</h2>
+	<pie title="fin" style="
+		width: 330px;
+		height: 330px;
+	">
+		<pie1 title="01%" style="rotate: 0.00turn; background: #f55;"></pie1>
+		<pie1 title="02%" style="rotate: 0.01turn; background: #955;"></pie1>
+		<pie1 title="03%" style="rotate: 0.02turn; background: #355;"></pie1>
+		<pie1 title="04%" style="rotate: 0.03turn; background: #955;"></pie1>
+		<pie1 title="05%" style="rotate: 0.04turn; background: #355;"></pie1>
+		<pie1 title="06%" style="rotate: 0.05turn; background: #955;"></pie1>
+		<pie1 title="07%" style="rotate: 0.06turn; background: #355;"></pie1>
+		<pie1 title="08%" style="rotate: 0.07turn; background: #955;"></pie1>
+		<pie1 title="09%" style="rotate: 0.08turn; background: #355;"></pie1>
+		<pie1 title="10%" style="rotate: 0.09turn; background: #955;"></pie1>
+
+		<pie1 title="11%" style="rotate: 0.10turn; background: #f55;"></pie1>
+		<pie1 title="12%" style="rotate: 0.11turn; background: #955;"></pie1>
+		<pie1 title="13%" style="rotate: 0.12turn; background: #355;"></pie1>
+		<pie1 title="14%" style="rotate: 0.13turn; background: #955;"></pie1>
+		<pie1 title="15%" style="rotate: 0.14turn; background: #355;"></pie1>
+		<pie1 title="16%" style="rotate: 0.15turn; background: #955;"></pie1>
+		<pie1 title="17%" style="rotate: 0.16turn; background: #355;"></pie1>
+		<pie1 title="18%" style="rotate: 0.17turn; background: #955;"></pie1>
+		<pie1 title="19%" style="rotate: 0.18turn; background: #355;"></pie1>
+		<pie1 title="20%" style="rotate: 0.19turn; background: #955;"></pie1>
+
+		<pie1 title="21%" style="rotate: 0.20turn; background: #f55;"></pie1>
+		<pie1 title="22%" style="rotate: 0.21turn; background: #955;"></pie1>
+		<pie1 title="23%" style="rotate: 0.22turn; background: #355;"></pie1>
+		<pie1 title="24%" style="rotate: 0.23turn; background: #955;"></pie1>
+		<pie1 title="25%" style="rotate: 0.24turn; background: #355;"></pie1>
+
+		<pieX title="05%" style="clip-path: polygon(0% 0%, 32.491969% 0%, 0 100%); rotate: 0.00turn; background: #ff7;"></pieX>
+		<pieX title="10%" style="clip-path: polygon(0% 0%, 72.654253% 0%, 0 100%); rotate: 0.15turn; background: #aaf;"></pieX>
+
+		<pie1 title="74-75%" style="rotate: 0.74turn; background: #355;"></pie1>
+		<pieX title="24%" style="clip-path: polygon(0% 0%, 1589.4545% 0%, 0 100%); rotate: 0.5turn; background: darkorange;"></pieX>
+	</pie>
+</d>
 </section>
 
 <pre>
@@ -105,14 +147,42 @@ TODO
 - ✅ pie25 (can be used on anything from 25-50%) -- fourth circle.
 - ✅ pie1 -- 1% of the circle
 - ✅ pie1 * 25 -- a proof of concept → labels (tooltips) all work on hover 🥳
-- 0-25 with a traingle clip-path of pie25.
+- ✅ 0-24% slices PoC and Lua calculator.
 </pre>
+
+1%
 <pre>
 25% on chart is 90deg
 90deg / 25 = 3.6deg
 Tangent of 3.6 degrees * 100%: 6.291466725365%
 </pre>
 
+Lua 0-25% calculator
+<pre>
+--[[
+	Side calculator for triangle clip-path.
+
+	25% on chart is 90 deg
+	v%  on chart is x deg
+
+	x deg = 90 deg * v / 25
+
+	Works with v from 0-24
+	(could maybe work up to 24.99, but that would literally be a stretch)
+]] 
+function p.sideProc(v)
+	local x = 90 * v / 25
+	local angleRadians = math.rad(x)
+	local tgValue = math.tan(angleRadians)
+	local proc = tgValue * 100
+	print("For "..v.."% => tg("..x.." deg) => clip-path triangle side is: "..proc.."%")
+	return proc
+end
+p.sideProc(1)
+p.sideProc(5)
+p.sideProc(10)
+</pre>
+	
 </body>
 </html>
 
