@@ -9,9 +9,11 @@ section {
 }
 section d {
 	display:grid;
+	justify-items: center;
 }
 section h2 {
 	font-size: 100%;
+	margin: 0;
 }
 
 body {

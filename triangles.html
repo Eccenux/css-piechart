@@ -20,7 +20,7 @@ pie {
 pie * {
 	display: block;
 	position: absolute;
-	transform-origin: left;
+	transform-origin: left bottom;
 	background-color: #655;
 }
 pie pie50 {
@@ -28,10 +28,14 @@ pie pie50 {
 	width: 50%; height: 100%;
 	border-radius: 0 100% 100% 0 / 50%;
 }
+pie pie1,
 pie pie25 {
 	top: 0; left: 50%;
 	width: 50%; height: 50%;
 	border-radius: 0 500% 0 0;
+}
+pie pie1 {
+	clip-path: polygon(0% 0%, 6.291466725365% 0%, 0 100%);
 }
 </style>
 
@@ -39,15 +43,58 @@ pie pie25 {
 
 <section>
 <d>
-	<h2>50</h2>
-	<pie>
+	<h2>50%</h2>
+	<pie title="fin">
 		<pie50/>
 	</pie>
 </d>
 <d>
-	<h2>25</h2>
-	<pie>
-		<pie25/>
+	<h2>25%</h2>
+	<pie title="fin">
+		<pie25 title="pie25"/>
+	</pie>
+</d>
+<d>
+	<h2>1%</h2>
+	<pie title="fin">
+		<pie1 title="pie1"></pie1>
+	</pie>
+</d>
+</section>
+<section>
+<d>
+	<h2>1% * 25</h2>
+	<pie title="fin" style="
+		width: 330px;
+		height: 330px;
+	">
+		<pie1 title="01%" style="rotate: 0.00turn; background: #f55;"></pie1>
+		<pie1 title="02%" style="rotate: 0.01turn; background: #955;"></pie1>
+		<pie1 title="03%" style="rotate: 0.02turn; background: #355;"></pie1>
+		<pie1 title="04%" style="rotate: 0.03turn; background: #955;"></pie1>
+		<pie1 title="05%" style="rotate: 0.04turn; background: #355;"></pie1>
+		<pie1 title="06%" style="rotate: 0.05turn; background: #955;"></pie1>
+		<pie1 title="07%" style="rotate: 0.06turn; background: #355;"></pie1>
+		<pie1 title="08%" style="rotate: 0.07turn; background: #955;"></pie1>
+		<pie1 title="09%" style="rotate: 0.08turn; background: #355;"></pie1>
+		<pie1 title="10%" style="rotate: 0.09turn; background: #955;"></pie1>
+
+		<pie1 title="11%" style="rotate: 0.10turn; background: #f55;"></pie1>
+		<pie1 title="12%" style="rotate: 0.11turn; background: #955;"></pie1>
+		<pie1 title="13%" style="rotate: 0.12turn; background: #355;"></pie1>
+		<pie1 title="14%" style="rotate: 0.13turn; background: #955;"></pie1>
+		<pie1 title="15%" style="rotate: 0.14turn; background: #355;"></pie1>
+		<pie1 title="16%" style="rotate: 0.15turn; background: #955;"></pie1>
+		<pie1 title="17%" style="rotate: 0.16turn; background: #355;"></pie1>
+		<pie1 title="18%" style="rotate: 0.17turn; background: #955;"></pie1>
+		<pie1 title="19%" style="rotate: 0.18turn; background: #355;"></pie1>
+		<pie1 title="20%" style="rotate: 0.19turn; background: #955;"></pie1>
+
+		<pie1 title="21%" style="rotate: 0.20turn; background: #f55;"></pie1>
+		<pie1 title="22%" style="rotate: 0.21turn; background: #955;"></pie1>
+		<pie1 title="23%" style="rotate: 0.22turn; background: #355;"></pie1>
+		<pie1 title="24%" style="rotate: 0.23turn; background: #955;"></pie1>
+		<pie1 title="25%" style="rotate: 0.24turn; background: #355;"></pie1>
 	</pie>
 </d>
 </section>
@@ -56,7 +103,14 @@ pie pie25 {
 TODO
 - ✅ pie50 (can be used on anything from 50-100%) -- half circle.
 - ✅ pie25 (can be used on anything from 25-50%) -- fourth circle.
+- ✅ pie1 -- 1% of the circle
+- ✅ pie1 * 25 -- a proof of concept → labels (tooltips) all work on hover 🥳
 - 0-25 with a traingle clip-path of pie25.
+</pre>
+<pre>
+25% on chart is 90deg
+90deg / 25 = 3.6deg
+Tangent of 3.6 degrees * 100%: 6.291466725365%
 </pre>
 
 </body>
