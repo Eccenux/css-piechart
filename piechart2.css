@@ -23,6 +23,7 @@ pie .pie50 {
 pie .pie12-5 {clip-path: polygon(0% 0%, 100% 0%, 0 100%);}
 pie    .pie5 {clip-path: polygon(0% 0%, 32.49197% 0%, 0 100%);}
 pie    .pie7 {clip-path: polygon(0% 0%, 47.056428% 0%, 0 100%);}
+pie    .pie1 {clip-path: polygon(0% 0%, 6.2914667% 0%, 0 100%);}
 /*
 For 5.5% => tg(19.8 deg) => clip-path triangle side is:36.002215309576%
 For 6% => tg(21.6 deg) => clip-path triangle side is:39.592800879772%
