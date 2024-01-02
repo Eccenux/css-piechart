@@ -6,39 +6,9 @@
 	<title>Use triangles • CSS Piechart</title>
 	<link rel="icon" type="image/x-icon" href="fav.ico">
 	<link rel="stylesheet" href="base.css">
+	<link rel="stylesheet" href="piechart2.css">
 </head>
 <body>
-<style>
-pie {
-	display: block;
-	position: relative;
-	width: 100px;
-	height: 100px;
-	border-radius: 50%;
-	background-color: yellowgreen;
-}
-pie * {
-	display: block;
-	position: absolute;
-	transform-origin: left bottom;
-	background-color: #655;
-}
-pie pie50 {
-	top: 0; left: 50%;
-	width: 50%; height: 100%;
-	border-radius: 0 100% 100% 0 / 50%;
-}
-pie pieX,
-pie pie1,
-pie pie25 {
-	top: 0; left: 50%;
-	width: 50%; height: 50%;
-	border-radius: 0 500% 0 0;
-}
-pie pie1 {
-	clip-path: polygon(0% 0%, 6.291466725365% 0%, 0 100%);
-}
-</style>
 
 <p>Usage of slices and triangles a building blocks for any slice.</p>
 
@@ -46,19 +16,31 @@ pie pie1 {
 <d>
 	<h2>50%</h2>
 	<pie title="fin">
-		<pie50/>
+		<slice class="pie50"/>
 	</pie>
 </d>
 <d>
 	<h2>25%</h2>
 	<pie title="fin">
-		<pie25 title="pie25"/>
+		<slice class="pie25" title="pie25"/>
 	</pie>
 </d>
 <d>
-	<h2>1%</h2>
+	<h2>12.5%</h2>
 	<pie title="fin">
-		<pie1 title="pie1"></pie1>
+		<slice class="pie12-5" title="pie12-5"/>
+	</pie>
+</d>
+<d>
+	<h2>7%</h2>
+	<pie title="fin">
+		<slice class="pie7" title="pie7"/>
+	</pie>
+</d>
+<d>
+	<h2>5%</h2>
+	<pie title="fin">
+		<slice class="pie5" title="pie5"/>
 	</pie>
 </d>
 </section>
@@ -69,50 +51,59 @@ pie pie1 {
 		width: 330px;
 		height: 330px;
 	">
-		<pie1 title="01%" style="rotate: 0.00turn; background: #f55;"></pie1>
-		<pie1 title="02%" style="rotate: 0.01turn; background: #955;"></pie1>
-		<pie1 title="03%" style="rotate: 0.02turn; background: #355;"></pie1>
-		<pie1 title="04%" style="rotate: 0.03turn; background: #955;"></pie1>
-		<pie1 title="05%" style="rotate: 0.04turn; background: #355;"></pie1>
-		<pie1 title="06%" style="rotate: 0.05turn; background: #955;"></pie1>
-		<pie1 title="07%" style="rotate: 0.06turn; background: #355;"></pie1>
-		<pie1 title="08%" style="rotate: 0.07turn; background: #955;"></pie1>
-		<pie1 title="09%" style="rotate: 0.08turn; background: #355;"></pie1>
-		<pie1 title="10%" style="rotate: 0.09turn; background: #955;"></pie1>
+		<slice class="pie1" title="01%" style="rotate: 0.00turn; background: #f55;"></slice>
+		<slice class="pie1" title="02%" style="rotate: 0.01turn; background: #955;"></slice>
+		<slice class="pie1" title="03%" style="rotate: 0.02turn; background: #355;"></slice>
+		<slice class="pie1" title="04%" style="rotate: 0.03turn; background: #955;"></slice>
+		<slice class="pie1" title="05%" style="rotate: 0.04turn; background: #355;"></slice>
+		<slice class="pie1" title="06%" style="rotate: 0.05turn; background: #955;"></slice>
+		<slice class="pie1" title="07%" style="rotate: 0.06turn; background: #355;"></slice>
+		<slice class="pie1" title="08%" style="rotate: 0.07turn; background: #955;"></slice>
+		<slice class="pie1" title="09%" style="rotate: 0.08turn; background: #355;"></slice>
+		<slice class="pie1" title="10%" style="rotate: 0.09turn; background: #955;"></slice>
 
-		<pie1 title="11%" style="rotate: 0.10turn; background: #f55;"></pie1>
-		<pie1 title="12%" style="rotate: 0.11turn; background: #955;"></pie1>
-		<pie1 title="13%" style="rotate: 0.12turn; background: #355;"></pie1>
-		<pie1 title="14%" style="rotate: 0.13turn; background: #955;"></pie1>
-		<pie1 title="15%" style="rotate: 0.14turn; background: #355;"></pie1>
-		<pie1 title="16%" style="rotate: 0.15turn; background: #955;"></pie1>
-		<pie1 title="17%" style="rotate: 0.16turn; background: #355;"></pie1>
-		<pie1 title="18%" style="rotate: 0.17turn; background: #955;"></pie1>
-		<pie1 title="19%" style="rotate: 0.18turn; background: #355;"></pie1>
-		<pie1 title="20%" style="rotate: 0.19turn; background: #955;"></pie1>
+		<slice class="pie1" title="11%" style="rotate: 0.10turn; background: #f55;"></slice>
+		<slice class="pie1" title="12%" style="rotate: 0.11turn; background: #955;"></slice>
+		<slice class="pie1" title="13%" style="rotate: 0.12turn; background: #355;"></slice>
+		<slice class="pie1" title="14%" style="rotate: 0.13turn; background: #955;"></slice>
+		<slice class="pie1" title="15%" style="rotate: 0.14turn; background: #355;"></slice>
+		<slice class="pie1" title="16%" style="rotate: 0.15turn; background: #955;"></slice>
+		<slice class="pie1" title="17%" style="rotate: 0.16turn; background: #355;"></slice>
+		<slice class="pie1" title="18%" style="rotate: 0.17turn; background: #955;"></slice>
+		<slice class="pie1" title="19%" style="rotate: 0.18turn; background: #355;"></slice>
+		<slice class="pie1" title="20%" style="rotate: 0.19turn; background: #955;"></slice>
 
-		<pie1 title="21%" style="rotate: 0.20turn; background: #f55;"></pie1>
-		<pie1 title="22%" style="rotate: 0.21turn; background: #955;"></pie1>
-		<pie1 title="23%" style="rotate: 0.22turn; background: #355;"></pie1>
-		<pie1 title="24%" style="rotate: 0.23turn; background: #955;"></pie1>
-		<pie1 title="25%" style="rotate: 0.24turn; background: #355;"></pie1>
+		<slice class="pie1" title="21%" style="rotate: 0.20turn; background: #f55;"></slice>
+		<slice class="pie1" title="22%" style="rotate: 0.21turn; background: #955;"></slice>
+		<slice class="pie1" title="23%" style="rotate: 0.22turn; background: #355;"></slice>
+		<slice class="pie1" title="24%" style="rotate: 0.23turn; background: #955;"></slice>
+		<slice class="pie1" title="25%" style="rotate: 0.24turn; background: #355;"></slice>
 
-		<pieX title="05%" style="clip-path: polygon(0% 0%, 32.491969% 0%, 0 100%); rotate: 0.00turn; background: #ff7;"></pieX>
-		<pieX title="10%" style="clip-path: polygon(0% 0%, 72.654253% 0%, 0 100%); rotate: 0.15turn; background: #aaf;"></pieX>
+		<slice class="pieX" title="05%" style="clip-path: polygon(0% 0%, 32.491969% 0%, 0 100%); rotate: 0.00turn; background: #ff7;"></slice>
+		<slice class="pieX" title="10%" style="clip-path: polygon(0% 0%, 72.654253% 0%, 0 100%); rotate: 0.15turn; background: #aaf;"></slice>
 
-		<pie1 title="74-75%" style="rotate: 0.74turn; background: #355;"></pie1>
-		<pieX title="24%" style="clip-path: polygon(0% 0%, 1589.4545% 0%, 0 100%); rotate: 0.5turn; background: darkorange;"></pieX>
+		<slice class="pie1" title="74-75%" style="rotate: 0.74turn; background: #355;"></slice>
+		<slice class="pieX" title="24%" style="clip-path: polygon(0% 0%, 1589.4545% 0%, 0 100%); rotate: 0.5turn; background: darkorange;"></slice>
 	</pie>
 </d>
 </section>
 
 <pre>
 TODO
-- gather large building blocks: 50, 25, 12.5, 10, 5
+- gather large building blocks
+	- ✅ exact: 50, 25, 12.5
+	- ✅ other: 7, 5 (for now)
 - figure out ways to connect blocks to build large percent
-	- should have at least 0.5% overlap
-	- should we have more blocks or just use 3 elements? (e.g. how to build 9.9%?)
-	- try to figure out more precises roundings?
+	- what is the smallest overlap Chrome and Firefox will tolerate?
+	- should probably have at least 0.5% overlap
+	- do poc with some specific percent on the edge of ranges
+		- 5, 9, 9.9
+		- 7, 13, 13.9
+		- 12.5, 24, 24.9, 25 (of two 12.5 to see if there would be a gap)
+		- 25, 49, 49.9, 50
+- try to figure out more precises roundings (for other slices)?
+	- 12.5 / 2 = 6.25
+	- so mabe calculate numbers between 0-10
 - figure out 0-5%
 	- calculate 50 values with 0.1 step (just print)
 	- check if the values work

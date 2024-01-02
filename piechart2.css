@@ -1,0 +1,36 @@
+pie {
+	display: block;
+	position: relative;
+	width: 100px;
+	height: 100px;
+	border-radius: 50%;
+	background-color: yellowgreen;
+}
+pie slice {
+	display: block;
+	position: absolute;
+	transform-origin: left bottom;
+	background-color: #655;
+
+	top: 0; left: 50%;
+	width: 50%; height: 50%;
+	border-radius: 0 500% 0 0;
+}
+pie .pie50 {
+	height: 100%;
+	border-radius: 0 100% 100% 0 / 50%;
+}
+pie .pie12-5 {clip-path: polygon(0% 0%, 100% 0%, 0 100%);}
+pie    .pie5 {clip-path: polygon(0% 0%, 32.49197% 0%, 0 100%);}
+pie    .pie7 {clip-path: polygon(0% 0%, 47.056428% 0%, 0 100%);}
+/*
+For 5.5% => tg(19.8 deg) => clip-path triangle side is:36.002215309576%
+For 6% => tg(21.6 deg) => clip-path triangle side is:39.592800879772%
+For 6.5% => tg(23.4 deg) => clip-path triangle side is:43.273864224743%
+For 7% => tg(25.2 deg) => clip-path triangle side is:47.056428121225%
+For 7.5% => tg(27 deg) => clip-path triangle side is:50.952544949443%
+For 8% => tg(28.8 deg) => clip-path triangle side is:54.975465219277%
+For 8.5% => tg(30.6 deg) => clip-path triangle side is:59.139835139947%
+For 9% => tg(32.4 deg) => clip-path triangle side is:63.461929754415%
+For 9.5% => tg(34.2 deg) => clip-path triangle side is:67.959929822453%
+*/
