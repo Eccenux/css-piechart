@@ -49,8 +49,8 @@
 <d>
 	<h2>tester</h2>
 	<pie title="fin" style="
-		width: 330px;
-		height: 330px;
+		width: 200px;
+		height: 200px;
 	">
 		<slice class="pie1" title="01%" style="rotate: 0.00turn; background: #f55;"></slice>
 		<slice class="pie1" title="02%" style="rotate: 0.01turn; background: #955;"></slice>
@@ -85,6 +85,132 @@
 </d>
 </section>
 
+<div style="display:flex; flex-wrap: wrap; gap: 1em">
+
+<div>
+<h2>5: 9, 9.6 (even 9.6 breaks in Chrome)</h2>
+<section style="display:flex; flex-wrap: wrap; width: max-content;">
+	<d>
+		<pie title="fin" style="width: 200px;height: 200px;">
+			<slice class="pie1" title="01%" style="rotate: 0.00turn; background: #f55;"></slice>
+			<slice class="pie1" title="02%" style="rotate: 0.01turn; background: #955;"></slice>
+			<slice class="pie1" title="03%" style="rotate: 0.02turn; background: #355;"></slice>
+			<slice class="pie1" title="04%" style="rotate: 0.03turn; background: #955;"></slice>
+			<slice class="pie1" title="05%" style="rotate: 0.04turn; background: #355;"></slice>
+			<slice class="pie1" title="06%" style="rotate: 0.05turn; background: #955;"></slice>
+			<slice class="pie1" title="07%" style="rotate: 0.06turn; background: #355;"></slice>
+			<slice class="pie1" title="08%" style="rotate: 0.07turn; background: #955;"></slice>
+			<slice class="pie1" title="09%" style="rotate: 0.08turn; background: #355;"></slice>
+			<slice class="pie1" title="10%" style="rotate: 0.09turn; background: #955;"></slice>
+	
+			<slice class="pie5" title="test" style="rotate: 0.00turn; background: #ff7;"></slice>
+			<slice class="pie5" title="test" style="rotate: 0.04turn; background: #ff7;"></slice>
+		</pie>
+	</d>
+	<d>
+		<pie title="fin" style="width: 200px;height: 200px;">
+			<slice class="pie5" title="test" style="rotate: 0.00turn; background: #ff7;"></slice>
+			<slice class="pie5" title="test" style="rotate: 0.046turn; background: #ff7;"></slice>
+		</pie>
+	</d>
+</section>
+</div>
+
+<div>
+<h2>7: 13, 13.6</h2>
+<section style="display:flex; flex-wrap: wrap;">
+	<d>
+		<pie title="fin" style="width: 200px;height: 200px;">
+			<slice class="pie7" title="test" style="rotate: 0.00turn; background: #ff7;"></slice>
+			<slice class="pie7" title="test" style="rotate: 0.06turn; background: #ff7;"></slice>
+		</pie>
+	</d>
+	<d>
+		<pie title="fin" style="width: 200px;height: 200px;">
+			<slice class="pie7" title="test" style="rotate: 0.00turn; background: #ff7;"></slice>
+			<slice class="pie7" title="test" style="rotate: 0.066turn; background: #ff7;"></slice>
+		</pie>
+	</d>
+</section>
+</div>
+
+<div>
+<h2>12.5: 24, 24.9, 25</h2>
+<section style="display:flex; flex-wrap: wrap;">
+	<d>
+		<pie title="fin" style="width: 200px;height: 200px;">
+			<slice class="pie1" title="24%" style="rotate: 0.23turn; background: #955;"></slice>
+			<slice class="pie1" title="25%" style="rotate: 0.24turn; background: #355;"></slice>
+
+			<slice class="pie12-5" title="test" style="rotate: 0.00turn; background: #ff7;"></slice>
+			<slice class="pie12-5" title="test" style="rotate: 0.115turn; background: #ff7;"></slice>
+		</pie>
+	</d>
+	<d>
+		<pie title="fin" style="width: 200px;height: 200px;">
+			<slice class="pie1" title="24%" style="rotate: 0.23turn; background: #955;"></slice>
+			<slice class="pie1" title="25%" style="rotate: 0.24turn; background: #355;"></slice>
+
+			<slice class="pie12-5" title="test" style="rotate: 0.00turn; background: #ff7;"></slice>
+			<slice class="pie12-5" title="test" style="rotate: 0.120turn; background: #ff7;"></slice>
+		</pie>
+	</d>
+	<d>
+		<pie title="fin" style="width: 200px;height: 200px;">
+			<slice class="pie1" title="24%" style="rotate: 0.23turn; background: #955;"></slice>
+			<slice class="pie1" title="25%" style="rotate: 0.24turn; background: #355;"></slice>
+
+			<slice class="pie12-5" title="test" style="rotate: 0.00turn; background: #ff7;"></slice>
+			<slice class="pie12-5" title="test" style="rotate: 0.125turn; background: #ff7;"></slice>
+		</pie>
+	</d>
+</section>
+</div>
+
+<div>
+<h2>25: 49, 50</h2>
+<section style="display:flex; flex-wrap: wrap;">
+	<d>
+		<pie title="fin" style="width: 200px;height: 200px;">
+			<slice class="pie25" title="test" style="rotate: 0.00turn; background: #ff7;"></slice>
+			<slice class="pie25" title="test" style="rotate: 0.24turn; background: #ff7;"></slice>
+		</pie>
+	</d>
+	<d>
+		<pie title="fin" style="width: 200px;height: 200px;">
+			<slice class="pie25" title="test" style="rotate: 0.00turn; background: #ff7;"></slice>
+			<slice class="pie25" title="test" style="rotate: 0.25turn; background: #ff7;"></slice>
+		</pie>
+	</d>
+</section>
+</div>
+
+<div>
+<h2>50: 75, 99, 99.9</h2>
+<section style="display:flex; flex-wrap: wrap;">
+	<d>
+		<pie title="fin" style="width: 200px;height: 200px;">
+			<slice class="pie50" title="test" style="rotate: 0.00turn; background: #ff7;"></slice>
+			<slice class="pie50" title="test" style="rotate: 0.25turn; background: #ff7;"></slice>
+		</pie>
+	</d>
+	<d>
+		<pie title="fin" style="width: 200px;height: 200px;">
+			<slice class="pie50" title="test" style="rotate: 0.00turn; background: #ff7;"></slice>
+			<slice class="pie50" title="test" style="rotate: 0.49turn; background: #ff7;"></slice>
+		</pie>
+	</d>
+	<d>
+		<pie title="fin" style="width: 200px;height: 200px;">
+			<slice class="pie50" title="test" style="rotate: 0.00turn; background: #ff7;"></slice>
+			<slice class="pie50" title="test" style="rotate: 0.499turn; background: #ff7;"></slice>
+		</pie>
+	</d>
+</section>
+</div>
+	
+</div>
+
 <pre>
 TODO
 - ✅ gather large building blocks
@@ -93,14 +219,11 @@ TODO
 - ✅ try to figure out more precises roundings (for other slices)?
 	- 12.5 / 2 = 6.25
 	- so mabe calculate numbers between 0-10
-- figure out ways to connect blocks to build large percent
+- ✅ figure out ways to connect blocks to build large percent
 	- what is the smallest overlap Chrome and Firefox will tolerate?
-	- should probably have at least 0.5% overlap
+		- Chrome needs overlap about 0.01turn (so 1%), but sometimes works event with .5%
+		- Firefox is betters and for 2 x 5% blocks can go up to 9.6% (Chrome is up to 9%)
 	- do poc with some specific percent on the edge of ranges
-		- 5, 9, 9.9
-		- 7, 13, 13.9
-		- 12.5, 24, 24.9, 25 (of two 12.5 to see if there would be a gap)
-		- 25, 49, 49.9, 50
 - figure out 0-5%
 	- calculate 50 values with 0.1 step (just print)
 	- check if the values work
