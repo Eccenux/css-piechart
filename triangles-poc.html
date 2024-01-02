@@ -213,18 +213,25 @@
 
 <pre>
 TODO
-- ✅ gather large building blocks
+- ✅ Gather large building blocks.
 	- exact: 50, 25, 12.5
 	- other: 7, 5 (for now)
-- ✅ try to figure out more precises roundings (for other slices)?
+- ✅ Try to figure out more precises roundings (for other slices)?
 	- 12.5 / 2 = 6.25
 	- so mabe calculate numbers between 0-10
-- ✅ figure out ways to connect blocks to build large percent
-	- what is the smallest overlap Chrome and Firefox will tolerate?
-		- Chrome needs overlap about 0.01turn (so 1%), but sometimes works event with .5%
-		- Firefox is betters and for 2 x 5% blocks can go up to 9.6% (Chrome is up to 9%)
-	- do poc with some specific percent on the edge of ranges
-- figure out 0-5%
+- ✅ Figure out ways to connect blocks to build a large percent.
+	- What is the smallest overlap Chrome and Firefox will tolerate?
+		- Chrome needs an overlap of about 0.01turn (so 1%), but sometimes works even with 0.5%.
+		- Firefox is better, and for 2 x 5% blocks, it can go up to 9.6% (Chrome is up to 9%).
+	- Do PoC with some specific percent on the edge of ranges.
+- Figure out 0-5%.
 	- calculate 50 values with 0.1 step (just print)
 	- check if the values work
+</pre>
+
+<pre>
+Takeaways:
+- Even though 12.5 is an exact path, it is still cut with a clip path and is less precise than those without a clip path.
+- Use 50, 25 whenever possible.
+- Use 12.5, 7, 5 until 5%.	
 </pre>
