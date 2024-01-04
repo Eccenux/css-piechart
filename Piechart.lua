@@ -98,6 +98,10 @@ function p.renderPie(json_data, json_options)
 	-- Move the last element to the first position
 	local lastEntry = table.remove(data)
 	table.insert(data, 1, lastEntry)
+	
+	p.cuts = mw.loadJsonData('Module:Piechart/cuts.json')
+	-- mw.log('cuts')
+	-- mw.logObject(p.cuts)
 
 	local html = ""
 	local sum = sumValues(data);
@@ -178,39 +182,77 @@ function renderFinal(label, bcolor, size)
 	return html
 end
 -- any other then final
-function renderOther(value, previous, label, bcolor, size)
-	local html =  ""
-	
-	local trans = string.format("translatex(%.0fpx)", size/2)
-	local maskStyle = getMaskStyle(previous)
-	if (value < 50) then
-		local rotate = string.format("rotate(-%.3fturn)", value/100)
-		local transform = 'transform: scale(-1, 1) ' .. rotate .. ' ' .. trans ..';'
-		html = html .. '\n\t<div class="piemask" '..maskStyle..'><div class="slice" style="'..transform..' '..bcolor..'" title="'..label..'"></div></div>'
-	else
-		-- 50%
-		html = html .. '\n\t<div class="piemask" '..maskStyle..'><div class="slice" style="'..bcolor..'" title="'..label..'"></div></div>'
-		-- value overflowing 50% (extra slice)
-		if (value > 50) then
-			maskStyle = getMaskStyle(previous + 50)
-			local rotate = string.format("rotate(-%.3fturn)", (value-50)/100)
-			local transform = 'transform: scale(-1, 1) ' .. rotate .. ' ' .. trans ..';'
-			html = html .. '\n\t<div class="piemask" '..maskStyle..'><div class="slice" style="'..transform..' '..bcolor..'" title="'..label..'"></div></div>'
-		end
+function renderOther(value, previous, label, bcolor)
+	-- value too small to see
+	if (value < 0.03) then
+		mw.log('value too small', value, label)
+		return ""
 	end
 	
+	local html =  ""
+	
+	local size = ''
+	mw.logObject({'v,p,l', value, previous, label})
+	if (value >= 50) then
+		html = sliceWithClass('pie50', 50, value, previous, bcolor, label)
+	elseif (value >= 25) then
+		html = sliceWithClass('pie25', 25, value, previous, bcolor, label)
+	elseif (value >= 12.5) then
+		html = sliceWithClass('pie12-5', 12.5, value, previous, bcolor, label)
+	elseif (value >= 7) then
+		html = sliceWithClass('pie7', 7, value, previous, bcolor, label)
+	elseif (value >= 5) then
+		html = sliceWithClass('pie5', 5, value, previous, bcolor, label)
+	else
+		-- 0-5%
+		local cutIndex = round(value*10)
+		if cutIndex < 1 then
+		    cutIndex = 1
+		end
+		local cut = p.cuts[cutIndex]
+		local transform = rotation(previous)
+		html = sliceX(cut, transform, bcolor, label)
+	end	
+	-- mw.log(html)
+
 	return html
 end
--- style of a mask (rotate into place)
-function getMaskStyle(previous)
-	if (previous>0) then
-		local maskRotate = string.format("rotate(%.3fturn)", previous/100)
-		local maskStyle = 'style="transform: '..maskRotate..';"'
-		return maskStyle
+function round(number)
+    return math.floor(number + 0.5)
+end
+-- render full slice with specific class
+function sliceWithClass(sizeClass, sizeStep, value, previous, bcolor, label)
+	local transform = rotation(previous)
+	local html =  ""
+	html = html .. sliceBase(sizeClass, transform, bcolor, label)
+	-- mw.logObject({'sliceWithClass:', sizeClass, sizeStep, value, previous, bcolor, label})
+	if (value > sizeStep) then
+		local extra = value - sizeStep
+		transform = rotation(previous + extra)
+		-- mw.logObject({'sliceWithClass; extra, transform', extra, transform})
+		html = html .. sliceBase(sizeClass, transform, bcolor, label)
+	end
+	return html
+end
+-- render single slice
+function sliceBase(sizeClass, transform, bcolor, label)
+	local style = bcolor
+	if transform ~= "" then
+        style = style .. '; ' .. transform
+    end
+	return '\n\t<div class="'..sizeClass..'" style="'..style..'" title="'..label..'"></div>'
+end
+function sliceX(cut, transform, bcolor, label)
+	local path = 'clip-path: polygon(0% 0%, '..cut..'% 0%, 0 100%)'
+	return '\n\t<div style="'..transform..'; '..bcolor..'; '..path..'" title="'..label..'"></div>'
+end
+
+function rotation(value)
+	if (value > 0) then
+		return string.format("transform: rotate(%.3fturn)", value/100)
 	end
 	return ''
 end
-
 function formatNum(value)
 	local lang = mw.language.getContentLanguage()
 	
