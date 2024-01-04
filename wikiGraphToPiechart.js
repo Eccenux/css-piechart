@@ -34,10 +34,10 @@ function (all) {
 		const item = {
 			"label": labels[i] + ': $v',
 			"value": values[i],
-			"color": colorPalette[i % colorPalette.length]
+			//"color": colorPalette[i % colorPalette.length]
 		};
 		pie.push(item);
 	}
 
-	return all + '\n\n' + JSON.stringify(pie).replace(/},{/g, '}\n,{');
+	return all + '\n\n{{Piechart|\n' + JSON.stringify(pie).replace(/},{/g, '}\n,{').replace(/}]/g, '}\n]\n|meta={"size":300}\n}}');
 }
