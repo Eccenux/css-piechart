@@ -33,6 +33,10 @@ local p = {}
 	local json_data = '['..table.concat(entries, ',')..']'
 	local html = p.renderPie(json_data, '{"autoscale":true}')
 	mw.logObject(html)
+
+	-- colors
+	local fr = { args = { " 123 " } }
+	local ret = p.color(fr)
 ]]
 
 --[[
@@ -41,8 +45,8 @@ local p = {}
 	{{{1}}}: slice number
 ]]
 function p.color(frame)
-	local no = tonumber(trim(frame.args[1]))
-	return ' ' .. defaultColor(no)
+	local index = tonumber(trim(frame.args[1]))
+	return ' ' .. defaultColor(index + 1)
 end
 
 --[[
@@ -312,9 +316,11 @@ function backColor(entry, no)
 end
 -- color from the default colors
 function defaultColor(no)
+	-- last entry is moved to 1st no
 	local color = lastColor
+	-- so entry no=2 is color[1] etc
 	if (no > 1) then 
-		local cIndex = (no - 1) % #colorPalette + 1
+		local cIndex = (no - 2) % #colorPalette + 1
 		color = colorPalette[cIndex]
 	end
 	mw.log(no, color)
