@@ -79,9 +79,35 @@ end
     - [x] sanitize user values
     - [x] auto colors
     - [x] function to get color by number (for custom legend)
+	- remember autoscaled data
+		- "$v" becomes "$d ($p)" for autscaled
+		- "$d" = data in its original form
+		- "$p" = percentage
     - generate a legend
-    	- (?) $info: $values.join(separator)
-    	- (?) or a list with css formatting (that could be overriden)
+		Vega default seems pretty simple (just a list): https://stackoverflow.com/a/74450346/333296
+		- chart head with legend: ".. aria-hidden="true" .."
+		- default head: "<ul class="smoothpie-legend">
+		- default item: "<li><span class="l-color" style="background-color:$color"></span><span class="l-label">$label</span></li>"
+    	- css formatting (that could be overriden)
+		- legend on/off:
+			-  default none ({"legend":nil})
+			- default style ({"legend":true})
+    - legend2: customization
+		- legend style/type:
+			-  left side: {"legend":{"position":"before" ,"direction":"row"}} -- default style
+			- right side: {"legend":{"position":"after"  ,"direction":"row"}} == {"legend":{"position":"after"}}
+			-     on top: {"legend":{"position":"before" ,"direction":"column"}}
+			-     bottom: {"legend":{"position":"after"  ,"direction":"column"}}
+		- (?) itemTpl support
+			- replace default item with tpl
+			- can I / should I sanitize it?
+			- support for $v, $d, $p
+		- (?) custom head
+    - (?) validation of input
+		- check if required values are present
+		- message showing whole entry, when entry is invalid
+		- pre-sanitize values?
+		- sane info when JSON fails? Maybe dump JSON and show example with quotes-n-all...
     - (?) option to sort entries by value
 ]] 
 function p.pie(frame)
