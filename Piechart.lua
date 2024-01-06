@@ -80,21 +80,7 @@ end
     - [x] auto colors
     - [x] function to get color by number (for custom legend)
 	- [x] remember and show autoscaled data
-    - generate a legend
-		- ✅ options.legend
-		- ✅ options.ariahidechart
-		- ✅ renderL impl (head + items)
-		- ✅ hide chart when options.ariahidechart
-		- ✅ renderL when options.legend
-		- ✅ add smooth-pie-container
-    	- css formatting (that could be overriden)
-			.smooth-pie-container = wikiflex
-			.smooth-pie-legend
-				ol/li reset
-				l-color square
-				l-label margin-left?
-    	- tests
-    	- cleanup
+    - [x] generate a legend
 	- (?) simple style by adding flex-direction style in options?
 		- +should be easier to sanitize
 		- +more standard
@@ -505,7 +491,6 @@ function defaultColor(no)
 		local cIndex = (no - 1) % #colorPalette + 1
 		color = colorPalette[cIndex]
 	end
-	mw.log(no, color)
 	return color
 end
 
