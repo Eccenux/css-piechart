@@ -79,10 +79,7 @@ end
     - [x] sanitize user values
     - [x] auto colors
     - [x] function to get color by number (for custom legend)
-	- remember autoscaled data
-		- "$v" becomes "$d ($p)" for autscaled
-		- "$d" = data in its original form
-		- "$p" = percentage
+	- [x] remember and show autoscaled data
     - generate a legend
 		Vega default seems pretty simple (just a list): https://stackoverflow.com/a/74450346/333296
 		- chart head with legend: ".. aria-hidden="true" .."
@@ -121,6 +118,26 @@ function p.pie(frame)
 	return trim(html)
 end
 
+-- Setup chart options.
+function p.setupOptions(json_options)
+	local options = {
+		-- circle size in [px]
+		size = 100,
+		-- autoscale values (otherwise assume they sum up to 100)
+		autoscale = false,
+	}   
+	if json_options then
+		local rawOptions = mw.text.jsonDecode(json_options)
+		if rawOptions then
+			if type(rawOptions.size) == "number" then
+				options.size = math.floor(rawOptions.size)
+			end
+			options.autoscale = rawOptions.autoscale or false 
+		end
+	end
+	return options
+end
+
 --[[
 	Render piechart.
 	
@@ -128,12 +145,7 @@ end
 ]]
 function p.renderPie(json_data, json_options)
 	local data = mw.text.jsonDecode(json_data)
-	local options = nil
-	if json_options then
-		options = mw.text.jsonDecode(json_options)
-	end
-	local size = options and type(options.size) == "number" and math.floor(options.size) or 100 -- circle size in [px]
-	local autoscale = options and options.autoscale or false -- autoscale values
+	local options = p.setupOptions(json_options)
 
 	-- Move the last element to the first position
 	local lastEntry = table.remove(data)
@@ -143,20 +155,23 @@ function p.renderPie(json_data, json_options)
 	-- mw.log('cuts')
 	-- mw.logObject(p.cuts)
 
-	local html = ""
 	local sum = sumValues(data);
 	-- force autoscale when over 100
 	if (sum > 100) then
-		autoscale = true
+		options.autoscale = true
 	end
+	-- pre-format entries
+	for index, entry in ipairs(data) do
+		prepareSlice(entry, sum, index, options)
+	end
+
 	local first = true
 	local previous = 0
-	local totalCount = #data
+	local html = ""
 	for index, entry in ipairs(data) do
-	    local html_slice, value = renderSlice(entry, previous, sum, size, index, autoscale)
-	    html = html .. html_slice
+		html = html .. renderSlice(entry, previous, index, options)
 	    if not first then
-	    	previous = previous + value
+	    	previous = previous + entry.value
 	    end
 	    first = false
 	end
@@ -182,34 +197,39 @@ end
 	@param entry Current entry.
 	@param sum Sum of all entries.
 ]]
-function renderSlice(entry, previous, sum, size, index, autoscale)
-	local value, label, bcolor = genSlice(entry, sum, index, autoscale)
+function renderSlice(entry, previous, index, options)
 	local html = ""
 	if (index==1) then
-		html = renderFinal(label, bcolor, size)
+		html = renderFinal(entry.label, entry.bcolor, options.size)
 	else
-		html = renderOther(value, previous, label, bcolor, size)
+		html = renderOther(entry.value, previous, entry.label, entry.bcolor, options.size)
 	end
-	return html, value
+	return html
 end
--- Prepare single slice data.
-function genSlice(entry, sum, index, autoscale)
+
+-- Prepare single slice data (modifies entry).
+function prepareSlice(entry, sum, index, options)
+	local autoscale = options.autoscale
 	local value = entry.value
 	if (type(value) ~= "number" or value < 0) then
 		if autoscale then
 			return "<!-- cannot autoscale unknown value -->"
 		end
-        value = 100 - sum
+		value = 100 - sum
 	end
+	-- entry.raw only when scaled
 	if autoscale then
-        value = (value / sum) * 100
+		entry.raw = value
+		value = (value / sum) * 100
 	end
+	entry.value = value
 
-	local label = formatValue(entry.label, value)
-	local bcolor = backColor(entry, index)
-	
-	return value, label, bcolor
+	-- prepare final label
+	entry.label = prepareLabel(entry.label, entry)
+	-- prepare final slice bg color
+	entry.bcolor = backColor(entry, index)
 end
+
 -- final, but header...
 function renderFinal(label, bcolor, size)
 	local html =  ""
@@ -257,9 +277,12 @@ function renderOther(value, previous, label, bcolor)
 
 	return html
 end
+
+-- round to int
 function round(number)
     return math.floor(number + 0.5)
 end
+
 -- render full slice with specific class
 function sliceWithClass(sizeClass, sizeStep, value, previous, bcolor, label)
 	local transform = rotation(previous)
@@ -274,6 +297,7 @@ function sliceWithClass(sizeClass, sizeStep, value, previous, bcolor, label)
 	end
 	return html
 end
+
 -- render single slice
 function sliceBase(sizeClass, transform, bcolor, label)
 	local style = bcolor
@@ -282,17 +306,24 @@ function sliceBase(sizeClass, transform, bcolor, label)
     end
 	return '\n\t<div class="'..sizeClass..'" style="'..style..'" title="'..label..'"></div>'
 end
+
+-- small slice cut to fluid size.
+-- range in theory: 0 to 24.(9)% reaching 24.(9)% for cut = +inf
+-- range in practice: 0 to 5%
 function sliceX(cut, transform, bcolor, label)
 	local path = 'clip-path: polygon(0% 0%, '..cut..'% 0%, 0 100%)'
 	return '\n\t<div style="'..transform..'; '..bcolor..'; '..path..'" title="'..label..'"></div>'
 end
 
+-- translate value to turn rotation
 function rotation(value)
 	if (value > 0) then
 		return string.format("transform: rotate(%.3fturn)", value/100)
 	end
 	return ''
 end
+
+-- Language sensitive float.
 function formatNum(value)
 	local lang = mw.language.getContentLanguage()
 	
@@ -306,15 +337,39 @@ function formatNum(value)
 	return v
 end
 
-function formatValue(label, value)
-	local v = formatNum(value)
-	local l = "" 
-	if label then
-		l = label:gsub("%$v", v..'%%')
-	else
-		l = v .. "%"
+--[[
+	Prepare final label.
+
+	Typical tpl:
+		"Abc: $v"
+	will result in:
+		"Abc: 23%" -- when values are percentages
+		"Abc: 1234 (23%)" -- when values are autoscaled
+	
+	Advanced tpl:
+		"Abc: $d ($p)" -- only works with autoscale
+]]
+function prepareLabel(tpl, entry)
+	-- static tpl
+	if tpl and not string.find(tpl, '$') then
+		return tpl
 	end
-	return l
+
+	-- format % value without %
+	local p = formatNum(entry.value)
+
+	-- default template
+	if not tpl then
+		tpl = "$v"
+	end
+
+	local label = "" 
+	if entry.raw then
+		label = tpl:gsub("%$p", p .. "%%"):gsub("%$d", entry.raw):gsub("%$v", entry.raw .. " (" .. p .. "%%)")
+	else
+		label = tpl:gsub("%$v", p .. "%%")
+	end
+	return label
 end
 
 -- default colors
