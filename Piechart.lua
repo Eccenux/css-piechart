@@ -1,5 +1,28 @@
 local p = {}
 --[[
+	Smooth piechart module.
+
+	Draws charts in HTML with an accessible legend (optional).
+	A list of all features is in the "TODO" section of the main `p.pie` function.
+
+	Use with a helper template that adds required CSS.
+
+	{{{1}}}:
+	[
+		{ "label": "pie: $v", "color": "wheat", "value": 40 },
+		{ "label": "cheese pizza $v", "color": "#fc0", "value": 20 },
+		{ "label": "mixed pizza: $v", "color": "#f60", "value": 20 },
+		{ "label": "raw pizza $v", "color": "#f30" }
+	]
+    Where $v is a formatted number (see `function prepareLabel`).
+
+	{{{meta}}}:
+		{"size":200, "autoscale":false, "legend":true}
+	All meta options are optional (see `function p.setupOptions`).
+]]
+-- Author: [[User:Nux|Maciej Nux]] (pl.wikipedia.org).
+
+--[[
 	Debug:
 	
 	-- labels and auto-value
@@ -52,13 +75,6 @@ end
 --[[
 	Piechart.
 	
-	{{{1}}}:
-	[
-        { "label": "k: $v", "value": 33.1  },
-        { "label": "m: $v", "value": -1  },
-    ]
-    where $v is a formatted label
-
     TODO:
     - [x] basic 2-element pie chart
         - read json
@@ -136,7 +152,8 @@ function p.setupOptions(json_options)
 			if (type(rawOptions.direction) == "string") then
 				-- Remove unsafe/invalid characters
 				local sanitized = rawOptions.direction:gsub("[^a-z0-9%-]", "")
-				options.direction = 'flex-direction: ' .. sanitized
+				-- also adjust width so that row-reverse won't push things to the right
+				options.direction = 'width: max-content; flex-direction: ' .. sanitized
 			end
 		end
 	end
