@@ -81,16 +81,8 @@ end
     - [x] function to get color by number (for custom legend)
 	- [x] remember and show autoscaled data
     - [x] generate a legend
-	- (?) simple style by adding flex-direction style in options?
-		- +should be easier to sanitize
-		- +more standard
-		- -wrong order in some cases, but chart is aria-hidden anyway
+	- [x] simple legend positioning by (flex-)direction
     - legend2: customization
-		- legend style/type:
-			-  left side: {"legend":{"position":"before" ,"direction":"row"}} -- default style
-			- right side: {"legend":{"position":"after"  ,"direction":"row"}} == {"legend":{"position":"after"}}
-			-     on top: {"legend":{"position":"before" ,"direction":"column"}}
-			-     bottom: {"legend":{"position":"after"  ,"direction":"column"}}
 		- (?) itemTpl support
 			- replace default item with tpl
 			- can I / should I sanitize it?
@@ -125,6 +117,8 @@ function p.setupOptions(json_options)
 		ariahidechart = false,
 		-- show legend (defaults to the left side)
 		legend = false,
+		-- direction of legend-chart flexbox (flex-direction)
+		direction = "",
 	}   
 	if json_options then
 		local rawOptions = mw.text.jsonDecode(json_options)
@@ -138,6 +132,11 @@ function p.setupOptions(json_options)
 			end
 			if rawOptions.ariahidechart then
 				options.ariahidechart = true
+			end
+			if (type(rawOptions.direction) == "string") then
+				-- Remove unsafe/invalid characters
+				local sanitized = rawOptions.direction:gsub("[^a-z0-9%-]", "")
+				options.direction = 'flex-direction: ' .. sanitized
 			end
 		end
 	end
@@ -160,7 +159,7 @@ function p.renderPie(json_data, json_options)
 	local ok, total = p.prepareEntries(data, options)
 
 	-- init render
-	local html = "<div class='smooth-pie-container'>"
+	local html = "<div class='smooth-pie-container' style='"..options.direction.."'>"
 
 	-- error info
 	if not ok then
