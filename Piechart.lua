@@ -147,10 +147,27 @@ function p.renderPie(json_data, json_options)
 	local data = mw.text.jsonDecode(json_data)
 	local options = p.setupOptions(json_options)
 
-	p.cuts = mw.loadJsonData('Module:Piechart/cuts.json')
-	-- mw.log('cuts')
-	-- mw.logObject(p.cuts)
+	-- prepare
+	local ok, total = p.prepareEntries(data, options)
 
+	-- init render
+	local html = ""
+
+	-- error info
+	if not ok then
+		html = html .. renderErrors(data)
+	end
+
+	-- render items
+	local header, items, footer = p.renderEntries(ok, total, data, options)
+	
+	html = html .. header .. items .. footer
+
+	return html
+end
+
+-- Prepare data (slices etc)
+function p.prepareEntries(data, options)
 	local sum = sumValues(data);
 	-- force autoscale when over 100
 	if (sum > 100) then
@@ -169,30 +186,7 @@ function p.renderPie(json_data, json_options)
 	end
 	total = no -- total valid
 
-	local html = ""
-	if not ok then
-		html = html .. renderErrors(data)
-	end
-
-	local first = true
-	local previous = 0
-	local no = 0
-	local items = ""
-	local header = ""
-	for index, entry in ipairs(data) do
-		if not entry.error then
-			no = no + 1
-			if no == total then
-				header = renderFinal(entry, options)
-			else
-				items = items .. renderOther(previous, entry, options)
-			end
-			previous = previous + entry.value
-		end
-	end
-	html = html .. header .. items .. '\n</div>'
-
-	return html
+	return ok, total
 end
 
 function sumValues(data)
@@ -249,6 +243,31 @@ function prepareSlice(entry, no, sum, total, options)
 	return true
 end
 
+-- Prepare data (slices etc)
+function p.renderEntries(ok, total, data, options)
+	-- cache for some items (small slices)
+	p.cuts = mw.loadJsonData('Module:Piechart/cuts.json')
+
+	local first = true
+	local previous = 0
+	local no = 0
+	local items = ""
+	local header = ""
+	for index, entry in ipairs(data) do
+		if not entry.error then
+			no = no + 1
+			if no == total then
+				header = renderFinal(entry, options)
+			else
+				items = items .. renderOther(previous, entry, options)
+			end
+			previous = previous + entry.value
+		end
+	end
+	local footer = '\n</div>'
+
+	return header, items, footer
+end
 -- final, but header...
 function renderFinal(entry, options)
 	local label = entry.label
