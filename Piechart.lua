@@ -202,15 +202,14 @@ end
 
 -- render error info
 function renderErrors(data)
-	local html = ""
+	local html = "\n<ol class='chart-errors' style='display:none'>"
 	for _, entry in ipairs(data) do
 		if entry.error then
 			entryJson = mw.text.jsonEncode(entry)
-			-- html = html .. "\n<!-- ".. entry.error .. "\n" .. entryJson .." -->\n"
-			html = html .. "\n<!-- ".. entryJson .." -->\n"
+			html = html .. "\n<li>".. entryJson .."</li>"
 		end
 	end
-	return html
+	return html .. "\n</ol>\n"
 end
 
 -- Prepare single slice data (modifies entry).
