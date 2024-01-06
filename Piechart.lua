@@ -81,14 +81,24 @@ end
     - [x] function to get color by number (for custom legend)
 	- [x] remember and show autoscaled data
     - generate a legend
-		Vega default seems pretty simple (just a list): https://stackoverflow.com/a/74450346/333296
-		- chart head with legend: ".. aria-hidden="true" .."
-		- default head: "<ul class="smoothpie-legend">
-		- default item: "<li><span class="l-color" style="background-color:$color"></span><span class="l-label">$label</span></li>"
+		- ✅ options.legend
+		- ✅ options.ariahidechart
+		- ✅ renderL impl (head + items)
+		- ✅ hide chart when options.ariahidechart
+		- ✅ renderL when options.legend
+		- ✅ add smooth-pie-container
     	- css formatting (that could be overriden)
-		- legend on/off:
-			-  default none ({"legend":nil})
-			- default style ({"legend":true})
+			.smooth-pie-container = wikiflex
+			.smooth-pie-legend
+				ol/li reset
+				l-color square
+				l-label margin-left?
+    	- tests
+    	- cleanup
+	- (?) simple style by adding flex-direction style in options?
+		- +should be easier to sanitize
+		- +more standard
+		- -wrong order in some cases, but chart is aria-hidden anyway
     - legend2: customization
 		- legend style/type:
 			-  left side: {"legend":{"position":"before" ,"direction":"row"}} -- default style
@@ -125,6 +135,10 @@ function p.setupOptions(json_options)
 		size = 100,
 		-- autoscale values (otherwise assume they sum up to 100)
 		autoscale = false,
+		-- hide chart for screen readers (when you have a table, forced for legend)
+		ariahidechart = false,
+		-- show legend (defaults to the left side)
+		legend = false,
 	}   
 	if json_options then
 		local rawOptions = mw.text.jsonDecode(json_options)
@@ -133,7 +147,16 @@ function p.setupOptions(json_options)
 				options.size = math.floor(rawOptions.size)
 			end
 			options.autoscale = rawOptions.autoscale or false 
+			if rawOptions.legend then
+				options.legend = true
+			end
+			if rawOptions.ariahidechart then
+				options.ariahidechart = true
+			end
 		end
+	end
+	if (options.legend) then
+		options.ariahidechart = true
 	end
 	return options
 end
@@ -151,17 +174,24 @@ function p.renderPie(json_data, json_options)
 	local ok, total = p.prepareEntries(data, options)
 
 	-- init render
-	local html = ""
+	local html = "<div class='smooth-pie-container'>"
 
 	-- error info
 	if not ok then
 		html = html .. renderErrors(data)
 	end
 
+	-- render legend
+	if options.legend then
+		html = html .. p.renderLegend(data, options)
+	end
+
 	-- render items
 	local header, items, footer = p.renderEntries(ok, total, data, options)
-	
 	html = html .. header .. items .. footer
+
+	-- end .smooth-pie-container
+	html = html .. "\n</div>"
 
 	return html
 end
@@ -242,6 +272,26 @@ function prepareSlice(entry, no, sum, total, options)
 	return true
 end
 
+-- render legend for pre-processed entries
+function p.renderLegend(data, options)
+	local html = "\n<ol class='smooth-pie-legend'>"
+	for _, entry in ipairs(data) do
+		if not entry.error then
+			html = html .. renderLegendItem(entry, options)
+		end
+	end
+	return html .. "\n</ol>\n"
+end
+-- render legend item
+function renderLegendItem(entry, options)
+	local label = entry.label
+	local bcolor = entry.bcolor
+	local html = "\n<li>"
+	html = html .. '<span class="l-color" style="'..bcolor..'"></span>'
+	html = html .. '<span class="l-label">'..label..'</span>'
+	return html .. "</li>"
+end
+
 -- Prepare data (slices etc)
 function p.renderEntries(ok, total, data, options)
 	-- cache for some items (small slices)
@@ -273,12 +323,19 @@ function renderFinal(entry, options)
 	local bcolor = entry.bcolor
 	local size = options.size
 
-	local html =  ""
+	-- hide chart for readers, especially when legend is there
+	local aria = ""
+	if (options.ariahidechart) then
+		aria = 'aria-hidden="true"'
+	end
+
+	-- slices container and last slice
 	local style = 'width:'..size..'px; height:'..size..'px;'..bcolor
-	html = [[
+	local html = [[
 <div class="smooth-pie"
-     style="]]..style..[["
-     title="]]..label..[["
+	style="]]..style..[["
+	title="]]..label..[["
+	]]..aria..[[
 >]]
 	return html
 end
