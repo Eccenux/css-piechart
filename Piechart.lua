@@ -46,7 +46,7 @@ local p = {}
 ]]
 function p.color(frame)
 	local index = tonumber(trim(frame.args[1]))
-	return ' ' .. defaultColor(index + 1)
+	return ' ' .. defaultColor(index)
 end
 
 --[[
@@ -147,10 +147,6 @@ function p.renderPie(json_data, json_options)
 	local data = mw.text.jsonDecode(json_data)
 	local options = p.setupOptions(json_options)
 
-	-- Move the last element to the first position
-	local lastEntry = table.remove(data)
-	table.insert(data, 1, lastEntry)
-	
 	p.cuts = mw.loadJsonData('Module:Piechart/cuts.json')
 	-- mw.log('cuts')
 	-- mw.logObject(p.cuts)
@@ -161,21 +157,40 @@ function p.renderPie(json_data, json_options)
 		options.autoscale = true
 	end
 	-- pre-format entries
+	local ok = true
+	local no = 0
+	local total = #data
 	for index, entry in ipairs(data) do
-		prepareSlice(entry, sum, index, options)
+		no = no + 1
+		if not prepareSlice(entry, no, sum, total, options) then
+			no = no - 1
+			ok = false
+		end
+	end
+	total = no -- total valid
+
+	local html = ""
+	if not ok then
+		html = html .. renderErrors(data)
 	end
 
 	local first = true
 	local previous = 0
-	local html = ""
+	local no = 0
+	local items = ""
+	local header = ""
 	for index, entry in ipairs(data) do
-		html = html .. renderSlice(entry, previous, index, options)
-	    if not first then
-	    	previous = previous + entry.value
-	    end
-	    first = false
+		if not entry.error then
+			no = no + 1
+			if no == total then
+				header = renderFinal(entry, options)
+			else
+				items = items .. renderOther(previous, entry, options)
+			end
+			previous = previous + entry.value
+		end
 	end
-	html = html .. '\n</div>'
+	html = html .. header .. items .. '\n</div>'
 
 	return html
 end
@@ -191,29 +206,27 @@ function sumValues(data)
 	return sum
 end
 
---[[
-	Render a single slice.
-	
-	@param entry Current entry.
-	@param sum Sum of all entries.
-]]
-function renderSlice(entry, previous, index, options)
+-- render error info
+function renderErrors(data)
 	local html = ""
-	if (index==1) then
-		html = renderFinal(entry.label, entry.bcolor, options.size)
-	else
-		html = renderOther(entry.value, previous, entry.label, entry.bcolor, options.size)
+	for _, entry in ipairs(data) do
+		if entry.error then
+			entryJson = mw.text.jsonEncode(entry)
+			-- html = html .. "\n<!-- ".. entry.error .. "\n" .. entryJson .." -->\n"
+			html = html .. "\n<!-- ".. entryJson .." -->\n"
+		end
 	end
 	return html
 end
 
 -- Prepare single slice data (modifies entry).
-function prepareSlice(entry, sum, index, options)
+function prepareSlice(entry, no, sum, total, options)
 	local autoscale = options.autoscale
 	local value = entry.value
 	if (type(value) ~= "number" or value < 0) then
 		if autoscale then
-			return "<!-- cannot autoscale unknown value -->"
+			entry.error = "cannot autoscale unknown value"
+			return false
 		end
 		value = 100 - sum
 	end
@@ -227,11 +240,21 @@ function prepareSlice(entry, sum, index, options)
 	-- prepare final label
 	entry.label = prepareLabel(entry.label, entry)
 	-- prepare final slice bg color
+	local index = no
+	if no == total then
+		index = -1
+	end
 	entry.bcolor = backColor(entry, index)
+
+	return true
 end
 
 -- final, but header...
-function renderFinal(label, bcolor, size)
+function renderFinal(entry, options)
+	local label = entry.label
+	local bcolor = entry.bcolor
+	local size = options.size
+
 	local html =  ""
 	local style = 'width:'..size..'px; height:'..size..'px;'..bcolor
 	html = [[
@@ -242,7 +265,11 @@ function renderFinal(label, bcolor, size)
 	return html
 end
 -- any other then final
-function renderOther(value, previous, label, bcolor)
+function renderOther(previous, entry, options)
+	local value = entry.value
+	local label = entry.label
+	local bcolor = entry.bcolor
+
 	-- value too small to see
 	if (value < 0.03) then
 		mw.log('value too small', value, label)
@@ -252,7 +279,7 @@ function renderOther(value, previous, label, bcolor)
 	local html =  ""
 	
 	local size = ''
-	mw.logObject({'v,p,l', value, previous, label})
+	-- mw.logObject({'v,p,l', value, previous, label})
 	if (value >= 50) then
 		html = sliceWithClass('pie50', 50, value, previous, bcolor, label)
 	elseif (value >= 25) then
@@ -396,12 +423,11 @@ function backColor(entry, no)
     end
 end
 -- color from the default colors
+-- last entry color for 0 or -1
 function defaultColor(no)
-	-- last entry is moved to 1st no
 	local color = lastColor
-	-- so entry no=2 is color[1] etc
-	if (no > 1) then 
-		local cIndex = (no - 2) % #colorPalette + 1
+	if (no > 0) then 
+		local cIndex = (no - 1) % #colorPalette + 1
 		color = colorPalette[cIndex]
 	end
 	mw.log(no, color)
